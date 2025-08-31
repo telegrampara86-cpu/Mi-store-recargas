@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tienda de Recargas | TuMarca</title>
+  <meta name="description" content="Vende recargas y pines digitales al instante. Telcel, Movistar, AT&T y más. Pagos seguros, soporte 24/7.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220;          /* Fondo principal oscuro */
+      --card:#121a2b;        /* Tarjetas */
+      --muted:#7b88a8;       /* Texto secundario */
+      --text:#e6edff;        /* Texto principal */
+      --brand:#5b9dff;       /* Color de marca */
+      --brand-2:#19d3da;     /* Acento */
+      --ok:#10b981;          /* Éxito */
+      --warn:#f59e0b;        /* Advertencia */
+      --err:#ef4444;         /* Error */
+      --radius:18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.04) inset;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial; color:var(--text); background:radial-gradient(1000px 600px at 80% -100px, rgba(91,157,255,.25), transparent 70%),
+      radial-gradient(800px 500px at -10% -150px, rgba(25,211,218,.20), transparent 70%), var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    /* Layout */
+    .container{width:min(1100px, 92%); margin-inline:auto}
+    header{position:sticky; top:0; backdrop-filter:saturate(180%) blur(10px); background:rgba(11,18,32,.55); border-bottom:1px solid rgba(255,255,255,.06); z-index:50}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
+    .brand .logo{width:36px; height:36px; border-radius:12px; background:
+      conic-gradient(from 210deg, var(--brand), var(--brand-2)); box-shadow:0 6px 18px rgba(91,157,255,.5)}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--text); cursor:pointer; transition:.2s transform ease, .2s box-shadow ease}
+    .btn:hover{transform:translateY(-1px); box-shadow:0 8px 24px rgba(0,0,0,.25)}
+    .btn.primary{background:linear-gradient(180deg, var(--brand), #367cff); border:none; color:#fff; box-shadow:0 10px 24px rgba(91,157,255,.35)}
+    .btn.whatsapp{background:#25d366; color:#052b16; border:none}
+
+    /* Hero */
+    .hero{padding:56px 0 28px}
+    .hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:28px}
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); box-shadow:var(--shadow)}
+    .p-24{padding:24px}
+    .muted{color:var(--muted)}
+    h1{font-size:clamp(28px, 4.2vw, 44px); line-height:1.05; margin:8px 0 12px}
+    .badges{display:flex; flex-wrap:wrap; gap:10px}
+    .badge{font-size:12px; padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.03)}
+
+    /* Form */
+    .form{display:grid; gap:14px}
+    .field{display:grid; gap:8px}
+    .label{font-size:13px; color:var(--muted)}
+    .control{position:relative}
+    .select, .input{appearance:none; width:100%; padding:14px 16px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.10); border-radius:12px; color:var(--text); outline:none}
+    .select:focus, .input:focus{border-color:var(--brand)}
+    .suffix{position:absolute; right:12px; top:50%; translate:0 -50%; pointer-events:none; opacity:.75}
+    .grid{display:grid; gap:12px; grid-template-columns:1fr 1fr}
+    .actions{display:flex; gap:10px; align-items:center; justify-content:space-between; margin-top:8px}
+    .note{font-size:12px; color:var(--muted)}
+
+    /* Product list / carriers */
+    .carriers{display:grid; grid-template-columns:repeat(6,1fr); gap:10px}
+    .carrier{border:1px dashed rgba(255,255,255,.12); border-radius:12px; padding:12px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.02); cursor:pointer; transition:.15s}
+    .carrier:hover{border-color:var(--brand)}
+    .carrier.selected{border:1px solid var(--brand); background:rgba(91,157,255,.12)}
+
+    /* Sections */
+    section{padding:36px 0}
+    h2{font-size:clamp(22px, 3vw, 30px); margin:0 0 16px}
+    .features{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+    .feature{padding:18px; border-radius:16px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.06)}
+
+    /* Table */
+    table{width:100%; border-collapse:collapse; background:rgba(255,255,255,.02); border-radius:14px; overflow:hidden}
+    th,td{padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left}
+    th{color:var(--muted); font-weight:600}
+    tr:last-child td{border-bottom:none}
+
+    /* Footer */
+    footer{padding:32px 0 60px; color:var(--muted)}
+
+    /* Floating WhatsApp */
+    .float{position:fixed; right:18px; bottom:18px; z-index:60}
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns:1fr}
+      .features{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .carriers{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>TuMarca Recargas</span>
+      </div>
+      <nav style="display:flex; gap:10px">
+        <a class="btn" href="#servicios">Servicios</a>
+        <a class="btn" href="#precios">Comisiones</a>
+        <a class="btn" href="#faq">FAQ</a>
+        <a class="btn primary" href="#recargar">Recargar ahora</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="card p-24">
+          <div class="badges">
+            <span class="badge">24/7</span>
+            <span class="badge">Automatizado</span>
+            <span class="badge">Pagos seguros</span>
+          </div>
+          <h1>Recargas y pines digitales al instante ⚡</h1>
+          <p class="muted" style="margin:0 0 16px">Telcel, Movistar, AT&T y más. Paga con tarjeta, transferencia o efectivo en OXXO. Recibo al instante por WhatsApp o correo.</p>
+
+          <div class="carriers" id="carriers">
+            <button class="carrier selected" data-carrier="Telcel" aria-label="Telcel">Telcel</button>
+            <button class="carrier" data-carrier="Movistar" aria-label="Movistar">Movistar</button>
+            <button class="carrier" data-carrier="AT&T" aria-label="AT&T">AT&T</button>
+            <button class="carrier" data-carrier="Unefon" aria-label="Unefon">Unefon</button>
+            <button class="carrier" data-carrier="Bait" aria-label="Bait">Bait</button>
+            <button class="carrier" data-carrier="Virgin" aria-label="Virgin Mobile">Virgin</button>
+          </div>
+        </div>
+
+        <!-- FORMULARIO -->
+        <div class="card p-24" id="recargar">
+          <h2 style="margin-top:0">Haz tu recarga</h2>
+          <form class="form" id="formRecarga" novalidate>
+            <div class="field">
+              <label class="label">Compañía</label>
+              <div class="control">
+                <select class="select" id="compania">
+                  <option>Telcel</option>
+                  <option>Movistar</option>
+                  <option>AT&T</option>
+                  <option>Unefon</option>
+                  <option>Bait</option>
+                  <option>Virgin</option>
+                </select>
+                <span class="suffix">▼</span>
+              </div>
+            </div>
+            <div class="grid">
+              <div class="field">
+                <label class="label">Número a recargar</label>
+                <input class="input" id="numero" inputmode="numeric" minlength="10" maxlength="10" placeholder="Ej. 5512345678" required />
+              </div>
+              <div class="field">
+                <label class="label">Monto</label>
+                <div class="control">
+                  <select class="select" id="monto">
+                    <option value="30">$30</option>
+                    <option value="50">$50</option>
+                    <option value="100" selected>$100</option>
+                    <option value="150">$150</option>
+                    <option value="200">$200</option>
+                  </select>
+                  <span class="suffix">$</span>
+                </div>
+              </div>
+            </div>
+            <div class="grid">
+              <div class="field">
+                <label class="label">Correo para comprobante</label>
+                <input class="input" id="correo" type="email" placeholder="tucorreo@dominio.com" />
+              </div>
+              <div class="field">
+                <label class="label">WhatsApp (opcional)</label>
+                <input class="input" id="whatsapp" inputmode="numeric" maxlength="15" placeholder="+52 55 1234 5678" />
+              </div>
+            </div>
+            <div class="actions">
+              <div class="note">Comisión incluida en el total. Tiempo de abono: &lt; 1 min.</div>
+              <button type="submit" class="btn primary">Pagar y recargar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section id="servicios">
+      <h2>¿Por qué elegirnos?</h2>
+      <div class="features">
+        <div class="feature">
+          <strong>Automático y rápido</strong>
+          <p class="muted">Recargas y pines se procesan de forma instantánea mediante integración API.</p>
+        </div>
+        <div class="feature">
+          <strong>Múltiples métodos de pago</strong>
+          <p class="muted">Tarjeta, transferencia SPEI, OXXO Pay o saldo interno para distribuidores.</p>
+        </div>
+        <div class="feature">
+          <strong>Soporte real 24/7</strong>
+          <p class="muted">Estamos contigo por WhatsApp o correo para cualquier aclaración.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMISIONES / PRECIOS -->
+    <section id="precios">
+      <h2>Comisiones y tiempos</h2>
+      <div class="card p-24">
+        <table>
+          <thead>
+            <tr><th>Servicio</th><th>Comisión</th><th>Abono</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Recarga celular (todas)</td><td>Incluida</td><td>Instantáneo</td></tr>
+            <tr><td>Pines (Netflix, Spotify, Xbox)</td><td>2–5%</td><td>Instantáneo</td></tr>
+            <tr><td>Pago de servicios (CFE, agua, TV)</td><td>$8–$12</td><td>1–5 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section>
+      <h2>Lo que dicen nuestros clientes</h2>
+      <div class="features">
+        <div class="feature"><em>“Recarga en 30 segundos, recibí mi comprobante al WhatsApp.”</em><br><span class="muted">— Ana R.</span></div>
+        <div class="feature"><em>“Pagué mi internet y se confirmó al momento. Súper fácil.”</em><br><span class="muted">— Luis C.</span></div>
+        <div class="feature"><em>“Excelente atención y soporte, 100% recomendado.”</em><br><span class="muted">— Sofía M.</span></div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <h2>Preguntas frecuentes</h2>
+      <div class="card p-24">
+        <details>
+          <summary>¿Cómo funciona la recarga?</summary>
+          <p class="muted">Eliges compañía y monto, pagas, y nuestro sistema envía la recarga por API. Te llega comprobante.</p>
+        </details>
+        <details>
+          <summary>¿Qué métodos de pago aceptan?</summary>
+          <p class="muted">Tarjeta, transferencia, OXXO Pay y saldo para mayoristas. Puedes activar más desde el panel admin.</p>
+        </details>
+        <details>
+          <summary>¿Emitimos factura?</summary>
+          <p class="muted">Sí, envíanos tus datos fiscales después de tu compra.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap">
+      <div>
+        <div class="brand"><div class="logo"></div><span>TuMarca Recargas</span></div>
+        <p class="muted" style="max-width:520px">Vende recargas, pines y pagos de servicios con tu propia marca. Plataforma segura, rápida y lista para crecer.</p>
+      </div>
+      <div>
+        <div style="font-weight:600">Contacto</div>
+        <a href="mailto:soporte@tumarca.com" class="muted">soporte@tumarca.com</a><br>
+        <a href="https://wa.me/5215512345678" class="muted">WhatsApp: +52 55 1234 5678</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón flotante WhatsApp -->
+  <a class="btn whatsapp float" href="https://wa.me/5215512345678?text=Hola%20quiero%20hacer%20una%20recarga" aria-label="WhatsApp">Chatea por WhatsApp</a>
+
+  <!-- Modal simple de pago/confirmación -->
+  <dialog id="modal" style="border:none; border-radius:18px; padding:0; background:var(--card); color:var(--text); box-shadow:var(--shadow); width:min(520px, 92%);">
+    <div class="p-24">
+      <h3 style="margin:0 0 8px">Resumen de compra</h3>
+      <p class="muted" id="resumen"></p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
+        <button class="btn" id="cerrar">Cancelar</button>
+        <button class="btn primary" id="pagar">Confirmar y pagar</button>
+      </div>
+      <p class="note" style="margin-top:10px">* Demo: el pago está simulado. Integra tu pasarela real en el código.</p>
+    </div>
+  </dialog>
+
+  <script>
+    // Sincroniza selección de carrier entre los chips y el <select>
+    const chips = document.querySelectorAll('.carrier');
+    const selectCompania = document.getElementById('compania');
+    chips.forEach(chip => chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selectCompania.value = chip.dataset.carrier;
+      selectCompania.dispatchEvent(new Event('change'));
+    }));
+
+    // Validación ligera y modal de pago
+    const form = document.getElementById('formRecarga');
+    const modal = document.getElementById('modal');
+    const resumen = document.getElementById('resumen');
+    const cerrar = document.getElementById('cerrar');
+    const pagar = document.getElementById('pagar');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const compania = document.getElementById('compania').value;
+      const numero = document.getElementById('numero').value.trim();
+      const monto = document.getElementById('monto').value;
+      const correo = document.getElementById('correo').value.trim();
+      const whatsapp = document.getElementById('whatsapp').value.trim();
+
+      if(numero.length !== 10 || !/^\d{10}$/.test(numero)){
+        alert('Ingresa un número de 10 dígitos.');
+        return;
+      }
+
+      resumen.innerHTML = `Compañía: <b>${compania}</b><br>Número: <b>${numero}</b><br>Monto: <b>$${monto}</b><br>Correo: <b>${correo || 'N/A'}</b><br>WhatsApp: <b>${whatsapp || 'N/A'}</b>`;
+      modal.showModal();
+    });
+
+    cerrar.addEventListener('click', ()=> modal.close());
+
+    pagar.addEventListener('click', async () => {
+      // 👉 Aquí integras tu pasarela de pago (Stripe/MercadoPago) y tu API de recargas
+      // 1) Cobrar: crea el pago y confirma
+      // 2) Si el pago es exitoso, llamar a tu endpoint backend para ejecutar la recarga vía proveedor
+      // 3) Mostrar comprobante y enviar por correo/WhatsApp
+
+      // DEMO: simulamos pago/recarga
+      pagar.disabled = true; pagar.textContent = 'Procesando…';
+      await new Promise(r => setTimeout(r, 1200));
+
+      // Ejemplo de request (cuando tengas backend listo):
+      /*
+      const resp = await fetch('/api/recargar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          compania: document.getElementById('compania').value,
+          numero: document.getElementById('numero').value.trim(),
+          monto: document.getElementById('monto').value,
+          correo: document.getElementById('correo').value.trim(),
+          whatsapp: document.getElementById('whatsapp').value.trim()
+        })
+      });
+      const data = await resp.json();
+      if(!resp.ok) throw new Error(data.message || 'Error en recarga');
+      */
+
+      pagar.textContent = '¡Recarga exitosa!';
+      setTimeout(()=>{ modal.close(); pagar.disabled=false; pagar.textContent='Confirmar y pagar'; alert('Listo: Recarga aplicada y comprobante enviado.'); }, 900);
+    });
+  </script>
+</body>
+</html>
